@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      background-color: #f4f6f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      width: 100%;
+      max-width: 450px;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    .form-label {
+      font-weight: 500;
+    }
+    .input-group-text {
+      cursor: pointer;
+    }
+    .btn-primary {
+      background-color: peru;
+      border-color: peru;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    h3.title {
+      color: peru;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card bg-white">
+    <h3 class="title">Create Your Account</h3>
+    <form id="signup" class="needs-validation" novalidate>
+      <div class="mb-3">
+        <label for="name" class="form-label"><i class="fa fa-user me-2 text-primary"></i>Username</label>
+        <input type="text" id="name" class="form-control" placeholder="Enter your name" required pattern="^[A-Za-z\s]{1,50}$">
+        <div class="invalid-feedback">Please enter a valid name (letters only).</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label"><i class="fa fa-lock me-2 text-primary"></i>Password</label>
+        <div class="input-group">
+          <input type="password" id="password" class="form-control" placeholder="Enter password" required
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+          <span class="input-group-text" id="togglePassword"><i class="fa fa-eye" id="toggleIcon"></i></span>
+        </div>
+        <div class="form-text">At least 8 characters, with uppercase, lowercase, and a number.</div>
+      </div>
+
+      <div class="mb-4">
+        <label for="email" class="form-label"><i class="fa fa-envelope me-2 text-primary"></i>Email</label>
+        <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+        <div class="invalid-feedback">Please enter a valid email address.</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Register</button>
+    </form>
+  </div>
+
+  <script>
+   
+    document.getElementById('togglePassword').addEventListener('click', function () {
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.getElementById('toggleIcon');
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      toggleIcon.classList.toggle('fa-eye');
+      toggleIcon.classList.toggle('fa-eye-slash');
+    });
+
+    async function hashPassword(password) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    document.getElementById('signup').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const form = e.target;
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+      }
+
+      const username = document.getElementById('name').value.trim();
+      const password = document.getElementById('password').value;
+      const emailInput = document.querySelector('input[name="email"]').value.trim();
+
+      const hashedPassword = await hashPassword(password);
+
+      localStorage.setItem('adminUsername', username);
+      localStorage.setItem('adminEmail', emailInput);
+      localStorage.setItem('adminPasswordHash', hashedPassword);
+
+      alert('Registration successful!');
+      window.location.href = 'admin.html';
+    });
+
+    document.getElementById('name').addEventListener('input', function () {
+      this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+    });
+  </script>
+</body>
+</html>

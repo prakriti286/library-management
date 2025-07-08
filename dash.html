@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Library Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      background-color: #f4f6f9;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    .sidebar {
+      background-color: #212529;
+      min-height: 100vh;
+    }
+
+    .sidebar h4 {
+      color: #dee2e6;
+      padding: 20px;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .sidebar a {
+      color: #ced4da;
+      padding: 12px 20px;
+      display: block;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 5px;
+      margin: 4px 0;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #0d6efd;
+      color: #fff;
+    }
+
+    .header-box {
+      background-color: #ffffff;
+      color: #343a40;
+      padding: 20px 30px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid #dee2e6;
+    }
+
+    .card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-header {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #ffffff;
+      color: #6c757d;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      border: 1px solid #dee2e6;
+      margin-top: 40px;
+    }
+
+    .list-group-item small {
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-md-3 col-lg-2 p-0 sidebar">
+        <h4 class="border-bottom"><i class="fas fa-book-reader me-2"></i>Library Panel</h4>
+        <a href="dash.html" class="active"><i class="fas fa-home me-2"></i> Dashboard</a>
+        <a href="addbooks.html"><i class="fas fa-book me-2"></i> Manage Books</a>
+        <a href="issuebook.html"><i class="fas fa-arrow-right me-2"></i> Issue Book</a>
+        <a href="returnbook.html"><i class="fas fa-arrow-left me-2"></i> Return Book</a>
+        <a href="student.html"><i class="fas fa-user-graduate me-2"></i> Add Student</a>
+        <a href="admin.html"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-md-9 col-lg-10 p-4">
+        <div class="header-box">
+          <h4 class="mb-0"><i class="fas fa-chart-line me-2 text-primary"></i>Library Dashboard</h4>
+        </div>
+        <!---->
+        <div class="row g-4 mb-4">
+          <div class="col-md-6">
+            <div class="card text-white bg-primary">
+              <div class="card-header">📚 Total Books</div>
+              <div class="card-body text-center">
+                <h4 id="bookCount">0</h4>
+                <p class="mb-0">Books in the Library</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card text-white bg-secondary">
+              <div class="card-header">👨‍🎓 Total Students</div>
+              <div class="card-body text-center">
+                <h4 id="studentCount">0</h4>
+                <p class="mb-0">Enrolled Students</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!---->
+        <div class="row g-4 mb-4">
+          <div class="col-md-4">
+            <div class="card text-white bg-info">
+              <div class="card-header">📘 Issued Books</div>
+              <div class="card-body text-center">
+                <h4 id="issuebooks">0</h4>
+                <p class="mb-0">Currently Issued</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card text-white bg-success">
+              <div class="card-header">📗 Returned Books</div>
+              <div class="card-body text-center">
+                <h4 id="returnbooks">0</h4>
+                <p class="mb-0">Books Returned</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card text-white bg-danger">
+              <div class="card-header">⚠️ Overdue Books</div>
+              <div class="card-body text-center">
+                <h4 id="overduebooks">0</h4>
+                <p class="mb-0">Pending Returns</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card bg-light h-100">
+              <div class="card-header bg-dark text-white">📋 Recent Activity</div>
+              <ul class="list-group list-group-flush" id="activityList"></ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card text-white bg-dark h-100 text-center p-4">
+              <h5 class="mb-3">📅 Today's Summary</h5>
+              <p>Issued Today: <strong id="issuedToday">0</strong></p>
+              <p>Returned Today: <strong id="returnedToday">0</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <footer>
+          &copy; 2025 Library Management System
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function loadDashboard() {
+      const books = JSON.parse(localStorage.getItem("books")) || [];
+      const students = JSON.parse(localStorage.getItem("students")) || [];
+      const issueHistory = JSON.parse(localStorage.getItem("issueHistory")) || [];
+      const returnHistory = JSON.parse(localStorage.getItem("returnHistory")) || [];
+
+      document.getElementById("bookCount").textContent = books.length;
+      document.getElementById("studentCount").textContent = students.length;
+      document.getElementById("issuebooks").textContent = issueHistory.length;
+      document.getElementById("returnbooks").textContent = returnHistory.length;
+
+      const today = new Date().toISOString().split("T")[0];
+      const todayDate = new Date(today);
+
+      const issuedToday = issueHistory.filter(i => i.issueDate === today).length;
+      const returnedToday = returnHistory.filter(r => r.returnDate === today).length;
+
+      const returnedIds = returnHistory.map(r => r.bookId + "_" + r.studentId);
+      const overdue = issueHistory.filter(i => {
+        const due = new Date(i.returnDate);
+        return !returnedIds.includes(i.bookId + "_" + i.studentId) && due < todayDate;
+      });
+
+      document.getElementById("issuedToday").textContent = issuedToday;
+      document.getElementById("returnedToday").textContent = returnedToday;
+      document.getElementById("overduebooks").textContent = overdue.length;
+
+      const activityLog = JSON.parse(localStorage.getItem("activityLog")) || [];
+      const list = document.getElementById("activityList");
+      list.innerHTML = "";
+
+      if (activityLog.length === 0) {
+        const li = document.createElement("li");
+        li.className = "list-group-item text-muted text-center";
+        li.textContent = "No recent activity";
+        list.appendChild(li);
+      } else {
+        activityLog.slice(0, 5).forEach(entry => {
+          const li = document.createElement("li");
+          li.className = "list-group-item";
+          li.innerHTML = `<small>${entry.timestamp}</small><br><strong>${entry.message}</strong>`;
+          list.appendChild(li);
+        });
+      }
+    }
+
+    window.onload = loadDashboard;
+  </script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Registration</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+
+  <style>
+    body {
+      background-color: #f4f6f9;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 250px;
+      background-color: #212529;
+      padding-top: 20px;
+    }
+
+    .sidebar h5 {
+      color: #dee2e6;
+      padding: 0 20px 20px;
+      font-size: 1.1rem;
+      font-weight: 600;
+       border-bottom: 2px solid #ced4da;
+    }
+
+    .sidebar a {
+      color: #ced4da;
+      padding: 12px 20px;
+      display: block;
+      text-decoration: none;
+      font-weight: 500;
+      border-radius: 5px;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #0d6efd;
+      color: #fff;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 30px 20px;
+    }
+
+    .form-section {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #0d6efd;
+    }
+
+    .form-label {
+      font-weight: 500;
+    }
+
+    .btn-custom {
+      background-color: #0d6efd;
+      color: #fff;
+      border: none;
+    }
+
+    .btn-custom:hover {
+      background-color: #084298;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="col-md-2 sidebar d-flex flex-column align-items-start px-3 py-4">
+        <h5><i class="fas fa-book-reader me-2"></i> Library Panel</h5>
+    <a href="dash.html"><i class="fas fa-home me-2"></i> Dashboard</a>
+    <a href="addbooks.html"><i class="fas fa-book me-2"></i> Manage Book</a>
+    <a href="issuebook.html"><i class="fas fa-arrow-right me-2"></i> Issue Book</a>
+    <a href="returnbook.html"><i class="fas fa-arrow-left me-2"></i> Return Book</a>
+    <a href="student.html" class="active"><i class="fas fa-user-graduate me-2"></i> Add Student</a>
+    <a href="admin.html"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="form-section">
+      <div class="text-center mb-4">
+        <h1><i class="fas fa-user-graduate me-2"></i>Student Registration</h1>
+      </div>
+
+      <form class="row g-4 text-start" onsubmit="saveStudentData(event)">
+        <div class="col-md-6">
+          <label for="studentId" class="form-label">Student ID</label>
+          <input type="number" id="studentId" min="1" class="form-control" placeholder="Enter ID" required>
+        </div>
+        <div class="col-md-6">
+          <label for="studentname" class="form-label">Student Name</label>
+          <input type="text" id="studentname" class="form-control" placeholder="Enter name" required>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Course</label>
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">Select Course</button>
+            <ul class="dropdown-menu w-100">
+              <li><h6 class="dropdown-header">Bachelor's</h6></li>
+              <li><a class="dropdown-item" href="#" data-value="B.Sc">B.Sc</a></li>
+              <li><a class="dropdown-item" href="#" data-value="BCA">BCA</a></li>
+              <li><a class="dropdown-item" href="#" data-value="BBA">BBA</a></li>
+              <li><a class="dropdown-item" href="#" data-value="B.A.">B.A.</a></li>
+              <li><a class="dropdown-item" href="#" data-value="B.Com">B.Com</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><h6 class="dropdown-header">Master's</h6></li>
+              <li><a class="dropdown-item" href="#" data-value="M.Sc">M.Sc</a></li>
+              <li><a class="dropdown-item" href="#" data-value="MCA">MCA</a></li>
+              <li><a class="dropdown-item" href="#" data-value="MBA">MBA</a></li>
+              <li><a class="dropdown-item" href="#" data-value="M.A.">M.A.</a></li>
+              <li><a class="dropdown-item" href="#" data-value="M.Com">M.Com</a></li>
+            </ul>
+          </div>
+          <input type="text" id="selectedcou" class="form-control mt-2" placeholder="Selected Course" readonly>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Semester</label>
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">Select Semester</button>
+            <ul class="dropdown-menu w-100">
+              <li><a class="dropdown-item" href="#" data-value1="Sem-1">Sem-1</a></li>
+              <li><a class="dropdown-item" href="#" data-value1="Sem-2">Sem-2</a></li>
+              <li><a class="dropdown-item" href="#" data-value1="Sem-3">Sem-3</a></li>
+              <li><a class="dropdown-item" href="#" data-value1="Sem-4">Sem-4</a></li>
+              <li><a class="dropdown-item" href="#" data-value1="Sem-5">Sem-5</a></li>
+              <li><a class="dropdown-item" href="#" data-value1="Sem-6">Sem-6</a></li>
+              <li><a class="dropdown-item" href="#" data-value1="Sem-7">Sem-7</a></li>
+              <li><a class="dropdown-item" href="#" data-value1="Sem-8">Sem-8</a></li>
+            </ul>
+          </div>
+          <input type="text" id="selectedSem" class="form-control mt-2" placeholder="Selected Semester" readonly>
+        </div>
+
+        <div class="col-md-4">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" class="form-control" placeholder="Enter email" required>
+        </div>
+
+        <div class="col-12 text-center mt-4">
+          <button type="submit" class="btn btn-custom px-4 me-2">Add Student</button>
+          <button type="button" class="btn btn-custom px-4 me-2" onclick="loadstudent()">View Records</button>
+          <button type="button" class="btn btn-custom px-4 me-2" onclick="deleteById()">Delete Record</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="mt-5" id="studentTable" style="display: none;">
+      <h3 class="text-center text-primary mb-3">Registered Students</h3>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Course</th>
+              <th>Semester</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody id="studentList"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('[data-value]').forEach(item => {
+      item.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.getElementById('selectedcou').value = this.getAttribute('data-value');
+      });
+    });
+
+    document.querySelectorAll('[data-value1]').forEach(item => {
+      item.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.getElementById('selectedSem').value = this.getAttribute('data-value1');
+      });
+    });
+
+    document.getElementById('studentname').addEventListener('input', function () {
+      this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+    });
+
+    function saveStudentData(event) {
+      event.preventDefault();
+      const id = document.getElementById('studentId').value.trim();
+      const name = document.getElementById('studentname').value.trim();
+      const course = document.getElementById('selectedcou').value.trim();
+      const sem = document.getElementById('selectedSem').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      if (!id || !name || !course || !sem || !email) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      let students = JSON.parse(localStorage.getItem("students")) || [];
+      const exists = students.some(student => student.studentId === id);
+      if (exists) {
+        alert(`Student with ID ${id} already exists.`);
+        return;
+      }
+
+      students.push({ studentId: id, name, course, sem, email });
+      localStorage.setItem("students", JSON.stringify(students));
+      alert(`Student "${name}" added successfully!`);
+      event.target.reset();
+      loadstudent();
+    }
+
+    function loadstudent() {
+      const studentList = document.getElementById('studentList');
+      const studentTable = document.getElementById('studentTable');
+      studentList.innerHTML = '';
+      let students = JSON.parse(localStorage.getItem("students")) || [];
+
+      students.forEach(student => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${student.studentId}</td>
+          <td>${student.name}</td>
+          <td>${student.course}</td>
+          <td>${student.sem}</td>
+          <td>${student.email}</td>
+        `;
+        studentList.appendChild(row);
+      });
+
+      studentTable.style.display = students.length ? 'block' : 'none';
+    }
+
+    function deleteById() {
+      const studentId = prompt("Enter the Student ID to delete:");
+      if (!studentId) return;
+      let students = JSON.parse(localStorage.getItem("students")) || [];
+      const student = students.find(s => s.studentId === studentId);
+      if (!student) {
+        alert(`No student found with ID ${studentId}.`);
+        return;
+      }
+
+      const confirmDelete = confirm(`Are you sure you want to delete ${student.name}?`);
+      if (!confirmDelete) return;
+
+      students = students.filter(s => s.studentId !== studentId);
+      localStorage.setItem("students", JSON.stringify(students));
+      alert(` Student with ID ${studentId} deleted.`);
+      loadstudent();
+    }
+  </script>
+
+</body>
+</html>
